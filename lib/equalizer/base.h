@@ -27,7 +27,7 @@ namespace equalizer {
 class base {
 public:
 	virtual ~base() {};
-	virtual void equalize(const gr_complex *in, gr_complex *out, int n) = 0;
+	virtual void equalize(const gr_complex *in, gr_complex *out, int n, gr_complex *chest) = 0;
 };
 
 } /* namespace channel_estimation */

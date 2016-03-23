@@ -70,9 +70,19 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 				pmt::string_to_symbol("ofdm_start"),
 				pmt::PMT_T,
 				pmt::string_to_symbol(name()));
+
+			P_chestvector = pmt::make_vector(64, pmt::from_complex(0,0));
+			for(int j = 0; j < 64; j++) {
+				pmt::vector_set(P_chestvector, j, pmt::from_complex(chest[j]));
+			}
+			add_item_tag(0, nitems_written(0) + o,
+				pmt::string_to_symbol("channel_estimation"),
+				P_chestvector,
+				pmt::string_to_symbol(name()));
 		}
 
-		d_equalizer->equalize(in + (i * 64), out + (o * 48), d_nsym);
+		chest = new gr_complex[64];
+		d_equalizer->equalize(in + (i * 64), out + (o * 48), d_nsym, chest);
 
 		if(d_nsym > 1) {
 			o++;
@@ -110,6 +120,9 @@ private:
 	equalizer::base *d_equalizer;
 	std::vector<gr::tag_t> tags;
 	gr::thread::mutex d_mutex;
+		
+	gr_complex *chest;
+	pmt::pmt_t P_chestvector;
 };
 
 

@@ -53,19 +53,28 @@ void parse(pmt::pmt_t msg) {
 		return;
 	}
 
+	pmt::pmt_t dict = pmt::car(msg);
 	msg = pmt::cdr(msg);
+
+	chest = dict_ref(dict, pmt::string_to_symbol("channel_estimation"), pmt::string_to_symbol("not found"));
 
 	int data_len = pmt::blob_length(msg);
 	mac_header *h = (mac_header*)pmt::blob_data(msg);
 
 	mylog(boost::format("length: %1%") % data_len );
 
-	dout << std::endl << "new mac frame  (length " << data_len << ")" << std::endl;
-	dout << "=========================================" << std::endl;
 	if(data_len < 20) {
 		dout << "frame too short to parse (<20)" << std::endl;
 		return;
 	}
+	
+	if(!check_mac_address(h->addr1, 0) || !check_mac_address(h->addr2, 1)){
+		return;
+	}
+
+	dout << std::endl << "new mac frame  (length " << data_len << ")" << std::endl;
+	dout << "=========================================" << std::endl;
+	
 	#define HEX(a) std::hex << std::setfill('0') << std::setw(2) << int(a) << std::dec
 	dout << "duration: " << HEX(h->duration >> 8) << " " << HEX(h->duration  & 0xff) << std::endl;
 	dout << "frame control: " << HEX(h->frame_control >> 8) << " " << HEX(h->frame_control & 0xff);
@@ -92,7 +101,7 @@ void parse(pmt::pmt_t msg) {
 	}
 
 	char *frame = (char*)pmt::blob_data(msg);
-
+/*
 	// DATA
 	if((((h->frame_control) >> 2) & 63) == 2) {
 		print_ascii(frame + 24, data_len - 24);
@@ -100,6 +109,8 @@ void parse(pmt::pmt_t msg) {
 	} else if((((h->frame_control) >> 2) & 63) == 34) {
 		print_ascii(frame + 26, data_len - 26);
 	}
+*/
+	print(chest);
 }
 
 void parse_management(char *buf, int length) {
@@ -250,6 +261,7 @@ void parse_data(char *buf, int length) {
 	dout << std::endl;
 
 	int seq_no = int(h->seq_nr >> 4);
+	std::cout << "seq nr: " << int(h->seq_nr >> 4) << " | length:" << length << std::endl;
 	dout << "seq nr: " << seq_no << std::endl;
 	dout << "mac 1: ";
 	print_mac_address(h->addr1, true);
@@ -352,10 +364,38 @@ void print_ascii(char* buf, int length) {
 	dout << std::endl;
 }
 
+bool check_mac_address(uint8_t *addr, int source){
+	int device_addr [6];
+	if (source){
+		// Device MAC address
+		device_addr[0] = 0x7c;
+		device_addr[1] = 0xdd;
+		device_addr[2] = 0x90;
+		device_addr[3] = 0x9f;
+		device_addr[4] = 0x7f;
+		device_addr[5] = 0x17;
+	} else {
+		// Router MAC address		
+		device_addr[0] = 0x5c;
+		device_addr[1] = 0x7d;
+		device_addr[2] = 0x5e;
+		device_addr[3] = 0xd6;
+		device_addr[4] = 0x32;
+		device_addr[5] = 0x68;
+	}
+	for(int i = 0; i < 6; i++) {
+		if ((int)addr[i] != device_addr[i])
+			return false;
+	}
+	return true;
+}
+
 private:
 	bool d_log;
 	bool d_debug;
 	int d_last_seq_no;
+
+	pmt::pmt_t chest;
 };
 
 ofdm_parse_mac::sptr
