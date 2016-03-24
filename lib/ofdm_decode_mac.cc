@@ -86,17 +86,10 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 		get_tags_in_range(tags_chest_temp, 0, nread + i, nread + i + 1,
 			pmt::string_to_symbol("channel_estimation"));
-<<<<<<< HEAD
 
 		if(tags_chest_temp.size()){
 				tags_chest = tags_chest_temp;
 			}
-=======
-		
-		if(tags_chest_temp.size()){
-			tags_chest = tags_chest_temp;
-		}
->>>>>>> 1e24c1bfbf68a8165ce582a99178f31b8c9b26d1
 		
 		if(tags.size()) {
 			

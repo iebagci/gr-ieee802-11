@@ -57,12 +57,8 @@ void parse(pmt::pmt_t msg) {
 	pmt::pmt_t dict = pmt::car(msg);
 	msg = pmt::cdr(msg);
 
-<<<<<<< HEAD
 	chest = dict_ref(dict, pmt::string_to_symbol("channel_estimation"), pmt::string_to_symbol("channel estimation not found"));
 	encoding = dict_ref(dict, pmt::string_to_symbol("encoding"), pmt::string_to_symbol("encoding not found"));
-=======
-	chest = dict_ref(dict, pmt::string_to_symbol("channel_estimation"), pmt::string_to_symbol("not found"));
->>>>>>> 1e24c1bfbf68a8165ce582a99178f31b8c9b26d1
 
 	int data_len = pmt::blob_length(msg);
 	mac_header *h = (mac_header*)pmt::blob_data(msg);
@@ -270,12 +266,8 @@ void parse_data(char *buf, int length) {
 	struct timeval t;
 	gettimeofday(&t, NULL);	
 	int seq_no = int(h->seq_nr >> 4);
-<<<<<<< HEAD
 	std::cout << "seq nr: " << int(h->seq_nr >> 4) << " | length: " << length << " | encoding: " << encoding << " | sec: " << t.tv_sec << " | usec: " << t.tv_usec << std::endl;
 
-=======
-	std::cout << "seq nr: " << int(h->seq_nr >> 4) << " | length:" << length << std::endl;
->>>>>>> 1e24c1bfbf68a8165ce582a99178f31b8c9b26d1
 	dout << "seq nr: " << seq_no << std::endl;
 	dout << "mac 1: ";
 	print_mac_address(h->addr1, true);
@@ -410,10 +402,7 @@ private:
 	int d_last_seq_no;
 
 	pmt::pmt_t chest;
-<<<<<<< HEAD
 	pmt::pmt_t encoding;
-=======
->>>>>>> 1e24c1bfbf68a8165ce582a99178f31b8c9b26d1
 };
 
 ofdm_parse_mac::sptr

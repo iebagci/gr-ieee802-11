@@ -85,14 +85,10 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 						pmt::from_uint64(d_encoding)),
 					pmt::string_to_symbol(name()));
 
-<<<<<<< HEAD
 				add_item_tag(0, nitems_written(0) + o,
 					pmt::string_to_symbol("channel_estimation"),
 					tags_chest[0].value,
 					pmt::string_to_symbol(name()));
-=======
-				add_item_tag(0,tags_chest.at(0));
->>>>>>> 1e24c1bfbf68a8165ce582a99178f31b8c9b26d1
 			}
 
 		} else if(d_copy_symbols) {
