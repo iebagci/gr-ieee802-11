@@ -16,6 +16,7 @@ then
 else
 	echo "creating fifo: ${FILE}"
 	mkfifo ${FILE}
+	sudo chown bagci ${FILE}
 fi
 
 
@@ -35,7 +36,8 @@ sudo ifconfig tap0 192.168.123.1
 ### start transceiver
 cd ${DIR}
 cd ../examples/
-./${FLOWGRAPH} &
+#./${FLOWGRAPH} &
+./${FLOWGRAPH} | tee /tmp/grc.log &
 sleep 1
 
 

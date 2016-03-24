@@ -19,7 +19,7 @@
 
 using namespace gr::ieee802_11::equalizer;
 
-void linear_comb::equalize(const gr_complex *in, gr_complex *out, int n) {
+void linear_comb::equalize(const gr_complex *in, gr_complex *out, int n, gr_complex *chest) {
 	if(n < 2)
 		return;
 

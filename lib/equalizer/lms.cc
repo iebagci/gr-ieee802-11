@@ -21,7 +21,7 @@
 
 using namespace gr::ieee802_11::equalizer;
 
-void lms::equalize(const gr_complex *in, gr_complex *out, int n) {
+void lms::equalize(const gr_complex *in, gr_complex *out, int n, gr_complex *chest) {
 
 	static float freq_offset = 0;
 	static float freq_sum = 0;
@@ -41,6 +41,7 @@ void lms::equalize(const gr_complex *in, gr_complex *out, int n) {
 			carrier[i] += in[i];
 			carrier[i] *= ref[i] * gr_complex(0.5, 0);
 		}
+		std::memcpy(chest, carrier, 64 * sizeof(gr_complex));
 	} else {
 
 		gr_complex p = POLARITY[(n - 2) % 127];

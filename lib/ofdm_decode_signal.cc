@@ -55,6 +55,8 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 	std::vector<gr::tag_t> tags;
 	const uint64_t nread = nitems_read(0);
 
+	std::vector<gr::tag_t> tags_chest;
+
 	dout << "Decode Signal: input " << ninput_items[0]
 		<< "  output " << noutput_items << std::endl;
 
@@ -62,6 +64,9 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 
 		get_tags_in_range(tags, 0, nread + i, nread + i + 1,
 			pmt::string_to_symbol("ofdm_start"));
+
+		get_tags_in_range(tags_chest, 0, nread + i, nread + i + 1,
+			pmt::string_to_symbol("channel_estimation"));
 
 		if(tags.size()) {
 			for(int n = 0; n < 48; n++) {
@@ -79,6 +84,15 @@ int general_work (int noutput_items, gr_vector_int& ninput_items,
 					pmt::cons(pmt::from_uint64(d_len),
 						pmt::from_uint64(d_encoding)),
 					pmt::string_to_symbol(name()));
+
+<<<<<<< HEAD
+				add_item_tag(0, nitems_written(0) + o,
+					pmt::string_to_symbol("channel_estimation"),
+					tags_chest[0].value,
+					pmt::string_to_symbol(name()));
+=======
+				add_item_tag(0,tags_chest.at(0));
+>>>>>>> 1e24c1bfbf68a8165ce582a99178f31b8c9b26d1
 			}
 
 		} else if(d_copy_symbols) {

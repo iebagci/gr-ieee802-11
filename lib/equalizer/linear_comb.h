@@ -26,7 +26,7 @@ namespace equalizer {
 
 class linear_comb: public base {
 public:
-	virtual void equalize(const gr_complex *in, gr_complex *out, int n);
+	virtual void equalize(const gr_complex *in, gr_complex *out, int n, gr_complex *chest);
 private:
 	static const gr_complex POLARITY[127];
 };

@@ -27,7 +27,7 @@ namespace equalizer {
 
 class lms: public base {
 public:
-	virtual void equalize(const gr_complex *in, gr_complex *out, int n);
+	virtual void equalize(const gr_complex *in, gr_complex *out, int n, gr_complex *chest);
 private:
 	gr_complex carrier[64];
 	static const gr_complex ref[64];
