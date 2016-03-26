@@ -10,7 +10,7 @@ FLOWGRAPH="wifi_rx.py"
 
 ### start transceiver
 PARENTDIR="${PWD%/*}"
-sudo ${PARENTDIR}/examples/./${FLOWGRAPH} | sudo tee $EXPDIR/grc.log &
+sudo ${PARENTDIR}/examples/${FLOWGRAPH} | sudo tee $EXPDIR/grc.log
 
 if (( $# >= 2 ))
 then
