@@ -264,10 +264,13 @@ void parse_data(char *buf, int length) {
 
 	// Print some stats for offline analysis, without debugging enabled.
 	struct timeval t;
+	struct tm* ptm;
 	gettimeofday(&t, NULL);	
+	ptm = localtime(&t.tv_sec);
 	int seq_no = int(h->seq_nr >> 4);
-	std::cout << "seq nr: " << int(h->seq_nr >> 4) << " | length: " << length << " | encoding: " << encoding << " | sec: " << t.tv_sec << " | usec: " << t.tv_usec << std::endl;
-
+	//std::cout << "seq nr: " << int(h->seq_nr >> 4) << " | length: " << length << " | encoding: " << encoding << " | date: " << ptm->tm_year+1900 << "." << ptm->tm_mon+1 << "." << ptm->tm_mday << "-" << ptm->tm_hour << ":" << ptm->tm_min << ":" << ptm->tm_sec << "." << t.tv_usec << " | sec: " << t.tv_sec << " | usec: " << t.tv_usec << std::endl;
+	printf("seq nr: %d | length: %d | encoding: %d | date: %04d.%02d.%02d-%02d:%02d:%02d.%06ld | sec: %d | usec: %d \n", seq_no, length, pmt::to_uint64(encoding), ptm->tm_year+1900, ptm->tm_mon+1, ptm->tm_mday, ptm->tm_hour, ptm->tm_min, ptm->tm_sec, t.tv_usec, t.tv_sec, t.tv_usec);
+	
 	dout << "seq nr: " << seq_no << std::endl;
 	dout << "mac 1: ";
 	print_mac_address(h->addr1, true);
